@@ -20,7 +20,7 @@ To use this module, you can create a Terraform configuration file and include th
 
 ```hcl
 module "virtual-machine" {
-  source = "../../"
+  source = "git::https://github.com/opz0/terraform-azure-virtual-machine.git?ref=v1.0.0"
 
   # Tags
   name        = "app"
@@ -114,7 +114,7 @@ This module deploys an Azure Virtual Machine.For Linux OS
 
 ```hcl
 module "virtual-machine" {
-  source = "../../"  # Replace with the path to the module source.
+  source = "git::https://github.com/opz0/terraform-azure-virtual-machine.git?ref=v1.0.0"  # Replace with the path to the module source.
 
   # Resource Group, location, VNet and Subnet details
   ## Tags
