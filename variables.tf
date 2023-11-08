@@ -256,6 +256,7 @@ variable "vm_size" {
 }
 
 variable "enable_os_disk_write_accelerator" {
+  type        = any
   description = "Should Write Accelerator be Enabled for this OS Disk? This requires that the `storage_account_type` is set to `Premium_LRS` and that `caching` is set to `None`."
   default     = false
 }
@@ -279,6 +280,7 @@ variable "provision_vm_agent" {
 }
 
 variable "os_disk_storage_account_type" {
+  type        = any
   description = "The Type of Storage Account which should back this the Internal OS Disk. Possible values include Standard_LRS, StandardSSD_LRS and Premium_LRS."
   default     = "StandardSSD_LRS"
 }
@@ -321,6 +323,7 @@ variable "admin_username" {
 }
 
 variable "source_image_id" {
+  type        = any
   description = "The ID of an Image which each Virtual Machine should be based on"
   default     = null
 }
@@ -465,6 +468,7 @@ variable "public_key" {
 }
 
 variable "vm_availability_zone" {
+  type        = any
   description = "(Optional) Specifies the Availability Zone in which this Virtual Machine should be located. Changing this forces a new Virtual Machine to be created."
   default     = null
 }
@@ -504,6 +508,7 @@ variable "key_vault_rbac_auth_enabled" {
 # Extensions
 
 variable "extensions" {
+  type        = any
   description = "List of extensions for azure virtual machine"
   default     = []
 }

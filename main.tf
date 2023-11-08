@@ -1,11 +1,8 @@
-
-data "azurerm_subscription" "current" {}
-data "azurerm_client_config" "current" {}
-
 #Module      : labels
 #Description : Terraform module to create consistent naming for multiple names.
+
 module "labels" {
-  source      = "git::git@github.com:opz0/terraform-azure-labels.git?ref=master"
+  source      = "git::https://github.com/opz0/terraform-azure-labels.git?ref=v1.0.0"
   name        = var.name
   environment = var.environment
   managedby   = var.managedby
@@ -31,7 +28,7 @@ resource "azurerm_network_interface" "default" {
     subnet_id                     = var.private_ip_address_version == "IPv4" ? element(var.subnet_id, count.index) : ""
     private_ip_address_version    = var.private_ip_address_version
     private_ip_address_allocation = var.private_ip_address_allocation
-    public_ip_address_id          = var.public_ip_enabled ? element(azurerm_public_ip.default.*.id, count.index) : null
+    public_ip_address_id          = var.public_ip_enabled ? element(azurerm_public_ip.default[*].id, count.index) : null
     primary                       = var.primary
     private_ip_address            = var.private_ip_address_allocation == "Static" ? element(var.private_ip_addresses, count.index) : ""
   }
@@ -106,9 +103,9 @@ resource "azurerm_linux_virtual_machine" "default" {
   admin_username                  = var.admin_username
   admin_password                  = var.disable_password_authentication == true ? null : var.admin_password
   disable_password_authentication = var.disable_password_authentication
-  network_interface_ids           = [element(azurerm_network_interface.default.*.id, count.index)]
+  network_interface_ids           = [element(azurerm_network_interface.default[*].id, count.index)]
   source_image_id                 = var.source_image_id != null ? var.source_image_id : null
-  availability_set_id             = join("", azurerm_availability_set.default.*.id)
+  availability_set_id             = join("", azurerm_availability_set.default[*].id)
   proximity_placement_group_id    = var.proximity_placement_group_id
   encryption_at_host_enabled      = var.enable_encryption_at_host
   patch_assessment_mode           = var.patch_assessment_mode
@@ -202,7 +199,7 @@ resource "azurerm_windows_virtual_machine" "win_vm" {
   computer_name                = var.computer_name != null ? var.computer_name : format("%s-win-virtual-machine-%s", module.labels.id, count.index + 1)
   resource_group_name          = var.resource_group_name
   location                     = var.location
-  network_interface_ids        = [element(azurerm_network_interface.default.*.id, count.index)]
+  network_interface_ids        = [element(azurerm_network_interface.default[*].id, count.index)]
   size                         = var.vm_size
   admin_password               = var.admin_password
   admin_username               = var.admin_username
@@ -212,7 +209,7 @@ resource "azurerm_windows_virtual_machine" "win_vm" {
   dedicated_host_id            = var.dedicated_host_id
   enable_automatic_updates     = var.enable_automatic_updates
   license_type                 = var.license_type
-  availability_set_id          = var.availability_set_enabled ? join("", azurerm_availability_set.default.*.id) : null
+  availability_set_id          = var.availability_set_enabled ? join("", azurerm_availability_set.default[*].id) : null
   encryption_at_host_enabled   = var.enable_encryption_at_host
   proximity_placement_group_id = var.proximity_placement_group_id
   patch_mode                   = var.windows_patch_mode
@@ -290,7 +287,7 @@ resource "azurerm_disk_encryption_set" "example" {
   name                = var.vm_addon_name == null ? format("vm-%s-dsk-encrpt-%s", module.labels.id, count.index + 1) : format("vm-%s-dsk-encrpt-%s", module.labels.id, var.vm_addon_name)
   resource_group_name = var.resource_group_name
   location            = var.location
-  key_vault_key_id    = var.enable_disk_encryption_set ? join("", azurerm_key_vault_key.example.*.id) : null
+  key_vault_key_id    = var.enable_disk_encryption_set ? join("", azurerm_key_vault_key.example[*].id) : null
 
   identity {
     type = "SystemAssigned"
@@ -301,7 +298,7 @@ resource "azurerm_role_assignment" "azurerm_disk_encryption_set_key_vault_access
   count                = var.enable_disk_encryption_set ? var.machine_count : 0
   scope                = var.key_vault_id //azurerm_key_vault.example.id
   role_definition_name = "Key Vault Crypto Service Encryption User"
-  principal_id         = azurerm_disk_encryption_set.example.*.identity.0.principal_id[0]
+  principal_id         = join("", azurerm_disk_encryption_set.example[*].identity[0].principal_id)
 }
 
 resource "azurerm_key_vault_key" "example" {
@@ -325,8 +322,8 @@ resource "azurerm_key_vault_access_policy" "main" {
 
   key_vault_id = var.key_vault_id
 
-  tenant_id = azurerm_disk_encryption_set.example[0].identity.0.tenant_id
-  object_id = azurerm_disk_encryption_set.example[0].identity.0.principal_id
+  tenant_id = azurerm_disk_encryption_set.example[0].identity[0].tenant_id
+  object_id = azurerm_disk_encryption_set.example[0].identity[0].principal_id
   key_permissions = [
     "Create",
     "Delete",
@@ -360,7 +357,7 @@ resource "azurerm_managed_disk" "data_disk" {
   storage_account_type   = lookup(each.value.data_disk, "storage_account_type", "StandardSSD_LRS")
   create_option          = var.create_option
   disk_size_gb           = each.value.data_disk.disk_size_gb
-  disk_encryption_set_id = var.enable_disk_encryption_set ? join("", azurerm_disk_encryption_set.example.*.id) : null #var.enable_disk_encryption_set ? var.disk_encryption_set_id : null
+  disk_encryption_set_id = var.enable_disk_encryption_set ? join("", azurerm_disk_encryption_set.example[*].id) : null #var.enable_disk_encryption_set ? var.disk_encryption_set_id : null
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "data_disk" {

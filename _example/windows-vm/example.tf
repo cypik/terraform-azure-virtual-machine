@@ -3,15 +3,15 @@ provider "azurerm" {
 }
 
 module "resource_group" {
-  source      = "git::git@github.com:opz0/terraform-azure-resource-group.git?ref=master"
-  name        = "appvm-window"
+  source      = "git::https://github.com/opz0/terraform-azure-resource-group.git?ref=v1.0.0"
+  name        = "app"
   environment = "tested"
   location    = "North Europe"
 }
 
 module "vnet" {
-  source              = "git::git@github.com:opz0/terraform-azure-vnet.git?ref=master"
-  name                = "app"
+  source              = "git::https://github.com/opz0/terraform-azure-vnet.git?ref=v1.0.0"
+  name                = "app-window"
   environment         = "test"
   resource_group_name = module.resource_group.resource_group_name
   location            = module.resource_group.resource_group_location
@@ -19,18 +19,15 @@ module "vnet" {
 }
 
 module "subnet" {
-  source = "git::git@github.com:opz0/terraform-azure-subnet.git?ref=master"
-
+  source               = "git::https://github.com/opz0/terraform-azure-subnet.git?ref=v1.0.0"
   name                 = "app"
   environment          = "test"
   resource_group_name  = module.resource_group.resource_group_name
   location             = module.resource_group.resource_group_location
-  virtual_network_name = module.vnet.vnet_name[0]
-
+  virtual_network_name = module.vnet.name
   #subnet
   subnet_names    = ["subnet1"]
   subnet_prefixes = ["10.0.1.0/24"]
-
   # route_table
   enable_route_table = true
   route_table_name   = "default_subnet"
@@ -42,8 +39,9 @@ module "subnet" {
     }
   ]
 }
+
 module "network_security_group" {
-  source                  = "git::git@github.com:opz0/terraform-azure-network-security-group.git?ref=master"
+  source                  = "git::https://github.com/opz0/terraform-azure-network-security-group.git?ref=v1.0.0"
   name                    = "app"
   environment             = "test"
   resource_group_name     = module.resource_group.resource_group_name
@@ -79,13 +77,10 @@ module "network_security_group" {
 
 module "virtual-machine" {
   source = "../../"
-
-
   # Resource Group, location, VNet and Subnet details
   ## Tags
   name        = "app"
   environment = "test"
-
   ## Common
   is_vm_windows       = true
   enabled             = true
@@ -95,8 +90,6 @@ module "virtual-machine" {
   create_option       = "Empty"
   disk_size_gb        = 128
   provision_vm_agent  = true
-
-
   ## Network Interface
   subnet_id                     = [module.subnet.default_subnet_id]
   private_ip_address_version    = "IPv4"
@@ -106,21 +99,17 @@ module "virtual-machine" {
   #nsg
   network_interface_sg_enabled = true
   network_security_group_id    = module.network_security_group.id
-
   ## Availability Set
   availability_set_enabled     = true
   platform_update_domain_count = 7
   platform_fault_domain_count  = 3
-
   ## Public IP
   public_ip_enabled = true
   sku               = "Basic"
   allocation_method = "Static"
   ip_version        = "IPv4"
-
-  os_type       = "windows"
+  #os_type       = "windows"
   computer_name = "app-win-comp"
-
   # windows_distribution_name = "windows2019dc"
   vm_size         = "Standard_B1s"
   admin_username  = "azureadmin"
@@ -130,7 +119,6 @@ module "virtual-machine" {
   image_sku       = "2019-Datacenter"
   image_version   = "latest"
   caching         = "ReadWrite"
-
 
   data_disks = [
     {
