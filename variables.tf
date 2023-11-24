@@ -12,8 +12,8 @@ variable "environment" {
 
 variable "managedby" {
   type        = string
-  default     = ""
-  description = "ManagedBy, eg 'Opz0'"
+  default     = "cypik"
+  description = "ManagedBy, eg 'cypik'"
 }
 
 variable "label_order" {
@@ -23,7 +23,7 @@ variable "label_order" {
 }
 variable "repository" {
   type        = string
-  default     = ""
+  default     = "https://github.com/cypik/terraform-azure-virtual-machine"
   description = "Terraform current module repo"
 }
 

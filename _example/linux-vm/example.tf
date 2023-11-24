@@ -3,14 +3,14 @@ provider "azurerm" {
 }
 
 module "resource_group" {
-  source      = "git::https://github.com/opz0/terraform-azure-resource-group.git?ref=v1.0.0"
+  source      = "git::https://github.com/cypik/terraform-azure-resource-group.git?ref=v1.0.0"
   name        = "app"
   environment = "tested"
   location    = "North Europe"
 }
 
 module "vnet" {
-  source              = "git::https://github.com/opz0/terraform-azure-vnet.git?ref=v1.0.0"
+  source              = "git::https://github.com/cypik/terraform-azure-vnet.git?ref=v1.0.0"
   name                = "app"
   environment         = "test"
   resource_group_name = module.resource_group.resource_group_name
@@ -19,7 +19,7 @@ module "vnet" {
 }
 
 module "subnet" {
-  source               = "git::https://github.com/opz0/terraform-azure-subnet.git?ref=v1.0.0"
+  source               = "git::https://github.com/cypik/terraform-azure-subnet.git?ref=v1.0.0"
   name                 = "app"
   environment          = "test"
   resource_group_name  = module.resource_group.resource_group_name
@@ -41,7 +41,7 @@ module "subnet" {
 }
 
 module "network_security_group" {
-  source                  = "git::https://github.com/opz0/terraform-azure-network-security-group.git?ref=v1.0.0"
+  source                  = "git::https://github.com/cypik/terraform-azure-network-security-group.git?ref=v1.0.0"
   name                    = "app"
   environment             = "test"
   resource_group_name     = module.resource_group.resource_group_name
@@ -75,7 +75,7 @@ module "network_security_group" {
 
 module "vault" {
   depends_on                  = [module.vnet]
-  source                      = "git::https://github.com/opz0/terraform-azure-key-vault.git?ref=v1.0.0"
+  source                      = "git::https://github.com/cypik/terraform-azure-key-vault.git?ref=v1.0.0"
   name                        = "app"
   environment                 = "test"
   sku_name                    = "standard"
@@ -86,7 +86,7 @@ module "vault" {
   enable_rbac_authorization   = true
   purge_protection_enabled    = true
   enabled_for_disk_encryption = true
-  principal_id                = ["7712bygdd44fuhkhgufjhgkhhkgjfjgj93"]
+  principal_id                = ["771xxxxxxxxxxxxxxxxxxxxxxxx93"]
   role_definition_name        = ["Key Vault Administrator"]
 
 }
@@ -125,7 +125,7 @@ module "virtual-machine" {
   ip_version        = "IPv4"
   ## Virtual Machine
   vm_size        = "Standard_B1s"
-  public_key     = "ssh-rsa AAAAB3NzaC14P7sBhuiofr4lGnfQOlr50mJuTffggH/H0r+pEr/9gJgdkk7jE/kQOY9OfC/tcoi0dgeYKFJYe2FCU6LI+ZZA6lsz31Zl1ymv1JnwCck7yY+OFtqHxjVsmDeFz99GLmhnlAB2DOTgaOJer4gjA6JQ6Ii97KuZiIWgCkW8DQcUNYhWhZHyH9w5KT8Ug6dlIjM1w95fadkHjpt0J1QEzPQp7lvhNj1IVOnZYfu5rw5HHHyhVoglSXbCcXj9xPyEH5Yq5wdYNBgi/Q6c31riOANppfn2R++VUMaVBPyglSrKS3r39EgwTnAwK1luS13YZAN8jh2p3r9hfCD5mw23g8Z5l1qrmXM7yye53jbEUEcCShV2TGdFA2cydWwR1G1/n7DM61+EFHLSc= arjun@arjun"
+  public_key     = "ssh-rsa AAAAB3NzaC14P7sBhxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx1/n7DM61+EFHLSc= arjun@arjun"
   admin_username = "ubuntu"
   # admin_password                = "P@ssw0rd!123!" # It is compulsory when disable_password_authentication = false
   caching                         = "ReadWrite"
