@@ -3,14 +3,14 @@ provider "azurerm" {
 }
 
 module "resource_group" {
-  source      = "git::https://github.com/opz0/terraform-azure-resource-group.git?ref=v1.0.0"
+  source      = "git::https://github.com/cypik/terraform-azure-resource-group.git?ref=v1.0.0"
   name        = "app"
   environment = "tested"
   location    = "North Europe"
 }
 
 module "vnet" {
-  source              = "git::https://github.com/opz0/terraform-azure-vnet.git?ref=v1.0.0"
+  source              = "git::https://github.com/cypik/terraform-azure-vnet.git?ref=v1.0.0"
   name                = "app-window"
   environment         = "test"
   resource_group_name = module.resource_group.resource_group_name
@@ -19,7 +19,7 @@ module "vnet" {
 }
 
 module "subnet" {
-  source               = "git::https://github.com/opz0/terraform-azure-subnet.git?ref=v1.0.0"
+  source               = "git::https://github.com/cypik/terraform-azure-subnet.git?ref=v1.0.0"
   name                 = "app"
   environment          = "test"
   resource_group_name  = module.resource_group.resource_group_name
@@ -41,7 +41,7 @@ module "subnet" {
 }
 
 module "network_security_group" {
-  source                  = "git::https://github.com/opz0/terraform-azure-network-security-group.git?ref=v1.0.0"
+  source                  = "git::https://github.com/cypik/terraform-azure-network-security-group.git?ref=v1.0.0"
   name                    = "app"
   environment             = "test"
   resource_group_name     = module.resource_group.resource_group_name

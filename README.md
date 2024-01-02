@@ -22,7 +22,7 @@ for creating AZURE resources, and you can customize the inputs as needed. Below 
 
 ```hcl
 module "virtual-machine" {
-  source                          = "git::https://github.com/opz0/terraform-azure-virtual-machine.git?ref=v1.0.0"
+  source                          = "git::https://github.com/cypik/terraform-azure-virtual-machine.git?ref=v1.0.0"
   ## Tags
   name                            = "apouq"
   environment                     = "test"
@@ -54,7 +54,7 @@ module "virtual-machine" {
   ip_version        = "IPv4"
   ## Virtual Machine
   vm_size        = "Standard_B1s"
-  public_key     = "ssh-rsa Cck7yY+OFtqHxjihuihui87hgjhgj987ghg787NYhWhZHyH9w5KT8Ug6dlIjM1w95fadkHjpt0J1QEzPQp7lvhNj1IVOnZYfu5rw5HHHyhVoglSXbCcXj9xPyEH5Yq5wdYNBgi/Q6c31riOANppfn2R++VUMaVBPyglSrKS3r39EgwTnAwK1luS13YZAN8jh2p3r9hfCD5mw23g8Z5l1qrmXM7yye53jbEUEcCShV2TGdFA2cydWwR1G1/n7DM61+EFHLSc= arjun@arjun"
+  public_key     = "ssh-rsa Cck7yYQ6c31e53jbEUEcCShV2TGdxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxEFHLSc= arjun@arjun"
   admin_username = "ubuntu"
   # admin_password                = "P@ssw0rd!123!" # It is compulsory when disable_password_authentication = false
   caching                         = "ReadWrite"
@@ -98,7 +98,7 @@ module "virtual-machine" {
 
 ```hcl
 module "virtual-machine" {
-  source                        = "git::https://github.com/opz0/terraform-azure-virtual-machine.git?ref=v1.0.0"
+  source                        = "git::https://github.com/cypik/terraform-azure-virtual-machine.git?ref=v1.0.0"
   ## Tags
   name                          = "app"
   environment                   = "test"
@@ -187,10 +187,10 @@ The module allows customization through variables. You can adjust the variables 
 The module also provides outputs that you can use to retrieve information about the created resources, such as VM information and public IP addresses.
 
 ## Examples
-For detailed examples on how to use this module, please refer to the 'examples' directory within this repository.
+For detailed examples on how to use this module, please refer to the '[examples](https://github.com/cypik/terraform-azure-virtual-machine/blob/master/_example)' directory within this repository.
 
 ## License
-This Terraform module is provided under the '[License Name]' License. Please see the [LICENSE](https://github.com/opz0/terraform-azure-virtual-machine/blob/readme/LICENSE) file for more details.
+This Terraform module is provided under the '[License Name]' License. Please see the [LICENSE](https://github.com/cypik/terraform-azure-virtual-machine/blob/master/LICENSE) file for more details.
 
 ## Author
 Your Name
