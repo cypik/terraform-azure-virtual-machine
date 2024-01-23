@@ -2,7 +2,8 @@
 #Description : Terraform module to create consistent naming for multiple names.
 
 module "labels" {
-  source      = "git::https://github.com/opz0/terraform-azure-labels.git?ref=v1.0.0"
+  source      = "cypik/labels/azure"
+  version     = "1.0.1"
   name        = var.name
   environment = var.environment
   managedby   = var.managedby

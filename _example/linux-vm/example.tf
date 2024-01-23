@@ -3,14 +3,16 @@ provider "azurerm" {
 }
 
 module "resource_group" {
-  source      = "git::https://github.com/cypik/terraform-azure-resource-group.git?ref=v1.0.0"
+  source      = "cypik/resource-group/azure"
+  version     = "1.0.1"
   name        = "app"
   environment = "tested"
   location    = "North Europe"
 }
 
 module "vnet" {
-  source              = "git::https://github.com/cypik/terraform-azure-vnet.git?ref=v1.0.0"
+  source              = "cypik/vnet/azure"
+  version             = "1.0.1"
   name                = "app"
   environment         = "test"
   resource_group_name = module.resource_group.resource_group_name
@@ -19,7 +21,8 @@ module "vnet" {
 }
 
 module "subnet" {
-  source               = "git::https://github.com/cypik/terraform-azure-subnet.git?ref=v1.0.0"
+  source               = "cypik/subnet/azure"
+  version              = "1.0.1"
   name                 = "app"
   environment          = "test"
   resource_group_name  = module.resource_group.resource_group_name
@@ -41,7 +44,8 @@ module "subnet" {
 }
 
 module "network_security_group" {
-  source                  = "git::https://github.com/cypik/terraform-azure-network-security-group.git?ref=v1.0.0"
+  source                  = "cypik/network-security-group/azure"
+  version                 = "1.0.1"
   name                    = "app"
   environment             = "test"
   resource_group_name     = module.resource_group.resource_group_name
@@ -75,8 +79,9 @@ module "network_security_group" {
 
 module "vault" {
   depends_on                  = [module.vnet]
-  source                      = "git::https://github.com/cypik/terraform-azure-key-vault.git?ref=v1.0.0"
-  name                        = "app"
+  source                      = "cypik/key-vault/azure"
+  version                     = "1.0.1"
+  name                        = "ap74gdg54fdp"
   environment                 = "test"
   sku_name                    = "standard"
   resource_group_name         = module.resource_group.resource_group_name
@@ -85,8 +90,8 @@ module "vault" {
   enable_private_endpoint     = true
   enable_rbac_authorization   = true
   purge_protection_enabled    = true
-  enabled_for_disk_encryption = true
-  principal_id                = ["771xxxxxxxxxxxxxxxxxxxxxxxx93"]
+  enabled_for_disk_encryption = false
+  principal_id                = ["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]
   role_definition_name        = ["Key Vault Administrator"]
 
 }
@@ -125,7 +130,7 @@ module "virtual-machine" {
   ip_version        = "IPv4"
   ## Virtual Machine
   vm_size        = "Standard_B1s"
-  public_key     = "ssh-rsa AAAAB3NzaC14P7sBhxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx1/n7DM61+EFHLSc= arjun@arjun"
+  public_key     = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
   admin_username = "ubuntu"
   # admin_password                = "P@ssw0rd!123!" # It is compulsory when disable_password_authentication = false
   caching                         = "ReadWrite"
