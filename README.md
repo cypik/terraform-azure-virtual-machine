@@ -25,7 +25,7 @@ for creating AZURE resources, and you can customize the inputs as needed. Below 
 ```hcl
 module "virtual-machine" {
   source                          = "cypik/virtual-machine/azure"
-  version                         = "1.0.1"
+  version                         = "1.0.2"
   ## Tags
   name                            = "apouq"
   environment                     = "test"
@@ -102,7 +102,7 @@ module "virtual-machine" {
 ```hcl
 module "virtual-machine" {
   source                        = "cypik/virtual-machine/azure"
-  version                       = "1.0.1"
+  version                       = "1.0.2"
   ## Tags
   name                          = "app"
   environment                   = "test"
@@ -195,20 +195,20 @@ Replace **MIT** and **Cypik** with the appropriate license and your information.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.6.6 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.87.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.5 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.2.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >=3.87.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 4.2.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_labels"></a> [labels](#module\_labels) | cypik/labels/azure | 1.0.1 |
+| <a name="module_labels"></a> [labels](#module\_labels) | cypik/labels/azure | 1.0.2 |
 
 ## Resources
 
@@ -232,6 +232,7 @@ Replace **MIT** and **Cypik** with the appropriate license and your information.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_accelerated_networking_enabled"></a> [accelerated\_networking\_enabled](#input\_accelerated\_networking\_enabled) | Should Accelerated Networking be enabled? Defaults to false. | `bool` | `false` | no |
 | <a name="input_addtional_capabilities_enabled"></a> [addtional\_capabilities\_enabled](#input\_addtional\_capabilities\_enabled) | Whether additional capabilities block is enabled. | `bool` | `false` | no |
 | <a name="input_admin_password"></a> [admin\_password](#input\_admin\_password) | The password associated with the local administrator account.NOTE:- Optional for Linux Vm but REQUIRED for Windows VM | `string` | `null` | no |
 | <a name="input_admin_username"></a> [admin\_username](#input\_admin\_username) | Specifies the name of the local administrator account.NOTE:- Optional for Linux Vm but REQUIRED for Windows VM | `string` | `""` | no |
@@ -253,15 +254,14 @@ Replace **MIT** and **Cypik** with the appropriate license and your information.
 | <a name="input_disk_size_gb"></a> [disk\_size\_gb](#input\_disk\_size\_gb) | Specifies the size of the OS Disk in gigabytes. | `number` | `8` | no |
 | <a name="input_dns_servers"></a> [dns\_servers](#input\_dns\_servers) | List of IP addresses of DNS servers. | `list(string)` | `[]` | no |
 | <a name="input_domain_name_label"></a> [domain\_name\_label](#input\_domain\_name\_label) | Label for the Domain Name. Will be used to make up the FQDN. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system. | `string` | `null` | no |
-| <a name="input_enable_accelerated_networking"></a> [enable\_accelerated\_networking](#input\_enable\_accelerated\_networking) | Should Accelerated Networking be enabled? Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_automatic_updates"></a> [enable\_automatic\_updates](#input\_enable\_automatic\_updates) | (Optional) Specifies if Automatic Updates are Enabled for the Windows Virtual Machine. Changing this forces a new resource to be created. Defaults to true. | `bool` | `true` | no |
 | <a name="input_enable_disk_encryption_set"></a> [enable\_disk\_encryption\_set](#input\_enable\_disk\_encryption\_set) | n/a | `bool` | `false` | no |
 | <a name="input_enable_encryption_at_host"></a> [enable\_encryption\_at\_host](#input\_enable\_encryption\_at\_host) | Flag to control Disk Encryption at host level | `bool` | `false` | no |
-| <a name="input_enable_ip_forwarding"></a> [enable\_ip\_forwarding](#input\_enable\_ip\_forwarding) | Should IP Forwarding be enabled? Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_os_disk_write_accelerator"></a> [enable\_os\_disk\_write\_accelerator](#input\_enable\_os\_disk\_write\_accelerator) | Should Write Accelerator be Enabled for this OS Disk? This requires that the `storage_account_type` is set to `Premium_LRS` and that `caching` is set to `None`. | `any` | `false` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Flag to control the module creation. | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment (e.g. `prod`, `dev`, `staging`). | `string` | `""` | no |
 | <a name="input_extensions"></a> [extensions](#input\_extensions) | List of extensions for azure virtual machine | `any` | `[]` | no |
+| <a name="input_extra_tags"></a> [extra\_tags](#input\_extra\_tags) | Additional tags (e.g. map(`BusinessUnit`,`XYZ`). | `map(string)` | `{}` | no |
 | <a name="input_identity_enabled"></a> [identity\_enabled](#input\_identity\_enabled) | Whether identity block is enabled. | `bool` | `false` | no |
 | <a name="input_identity_ids"></a> [identity\_ids](#input\_identity\_ids) | Specifies a list of user managed identity ids to be assigned to the VM. | `list(any)` | `[]` | no |
 | <a name="input_idle_timeout_in_minutes"></a> [idle\_timeout\_in\_minutes](#input\_idle\_timeout\_in\_minutes) | Specifies the timeout for the TCP idle connection. The value can be set between 4 and 60 minutes. | `number` | `10` | no |
@@ -270,6 +270,7 @@ Replace **MIT** and **Cypik** with the appropriate license and your information.
 | <a name="input_image_sku"></a> [image\_sku](#input\_image\_sku) | Specifies the SKU of the image used to create the virtual machine. | `string` | `""` | no |
 | <a name="input_image_version"></a> [image\_version](#input\_image\_version) | Specifies the version of the image used to create the virtual machine. | `string` | `""` | no |
 | <a name="input_internal_dns_name_label"></a> [internal\_dns\_name\_label](#input\_internal\_dns\_name\_label) | The (relative) DNS Name used for internal communications between Virtual Machines in the same Virtual Network. | `string` | `null` | no |
+| <a name="input_ip_forwarding_enabled"></a> [ip\_forwarding\_enabled](#input\_ip\_forwarding\_enabled) | Should IP Forwarding be enabled? Defaults to false. | `bool` | `false` | no |
 | <a name="input_ip_version"></a> [ip\_version](#input\_ip\_version) | The IP Version to use, IPv6 or IPv4. | `string` | `""` | no |
 | <a name="input_is_vm_linux"></a> [is\_vm\_linux](#input\_is\_vm\_linux) | Create Linux Virtual Machine. | `bool` | `false` | no |
 | <a name="input_is_vm_windows"></a> [is\_vm\_windows](#input\_is\_vm\_windows) | Create Windows Virtual Machine. | `bool` | `false` | no |
@@ -281,7 +282,7 @@ Replace **MIT** and **Cypik** with the appropriate license and your information.
 | <a name="input_location"></a> [location](#input\_location) | Location where resource should be created. | `string` | `""` | no |
 | <a name="input_machine_count"></a> [machine\_count](#input\_machine\_count) | Number of Virtual Machines to create. | `number` | `0` | no |
 | <a name="input_managed"></a> [managed](#input\_managed) | Specifies whether the availability set is managed or not. Possible values are true (to specify aligned) or false (to specify classic). Default is true. | `bool` | `true` | no |
-| <a name="input_managedby"></a> [managedby](#input\_managedby) | ManagedBy, eg 'cypik' | `string` | `"cypik"` | no |
+| <a name="input_managedby"></a> [managedby](#input\_managedby) | ManagedBy, eg 'info@cypik.com' | `string` | `"info@cypik.com"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name  (e.g. `app` or `cluster`). | `string` | `""` | no |
 | <a name="input_network_interface_sg_enabled"></a> [network\_interface\_sg\_enabled](#input\_network\_interface\_sg\_enabled) | Whether network interface security group is enabled. | `bool` | `false` | no |
 | <a name="input_network_security_group_id"></a> [network\_security\_group\_id](#input\_network\_security\_group\_id) | The ID of the Network Security Group which should be attached to the Network Interface. | `string` | `""` | no |

@@ -4,7 +4,7 @@ provider "azurerm" {
 
 module "resource_group" {
   source      = "cypik/resource-group/azure"
-  version     = "1.0.1"
+  version     = "1.0.2"
   name        = "app"
   environment = "tested"
   location    = "North Europe"
@@ -12,7 +12,7 @@ module "resource_group" {
 
 module "vnet" {
   source              = "cypik/vnet/azure"
-  version             = "1.0.1"
+  version             = "1.0.2"
   name                = "app"
   environment         = "test"
   resource_group_name = module.resource_group.resource_group_name
@@ -22,7 +22,7 @@ module "vnet" {
 
 module "subnet" {
   source               = "cypik/subnet/azure"
-  version              = "1.0.1"
+  version              = "1.0.2"
   name                 = "app"
   environment          = "test"
   resource_group_name  = module.resource_group.resource_group_name
@@ -45,7 +45,7 @@ module "subnet" {
 
 module "network_security_group" {
   source                  = "cypik/network-security-group/azure"
-  version                 = "1.0.1"
+  version                 = "1.0.2"
   name                    = "app"
   environment             = "test"
   resource_group_name     = module.resource_group.resource_group_name
@@ -80,18 +80,18 @@ module "network_security_group" {
 module "vault" {
   depends_on                  = [module.vnet]
   source                      = "cypik/key-vault/azure"
-  version                     = "1.0.1"
-  name                        = "ap74gdg54fdp"
+  version                     = "1.0.2"
+  name                        = "ap74g765dg54fdp"
   environment                 = "test"
   sku_name                    = "standard"
   resource_group_name         = module.resource_group.resource_group_name
   subnet_id                   = module.subnet.default_subnet_id
   virtual_network_id          = module.vnet.id
-  enable_private_endpoint     = true
-  enable_rbac_authorization   = true
-  purge_protection_enabled    = true
+  enable_private_endpoint     = false
+  enable_rbac_authorization   = false
+  purge_protection_enabled    = false
   enabled_for_disk_encryption = false
-  principal_id                = ["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]
+  principal_id                = ["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]
   role_definition_name        = ["Key Vault Administrator"]
 
 }
@@ -115,7 +115,7 @@ module "virtual-machine" {
   private_ip_address_version    = "IPv4"
   private_ip_address_allocation = "Static"
   primary                       = true
-  private_ip_addresses          = ["10.0.1.6"]
+  private_ip_addresses          = ["10.0.1.6", "10.0.1.7", "10.0.1.8"]
   #nsg
   network_interface_sg_enabled = true
   network_security_group_id    = module.network_security_group.id
@@ -130,7 +130,7 @@ module "virtual-machine" {
   ip_version        = "IPv4"
   ## Virtual Machine
   vm_size        = "Standard_B1s"
-  public_key     = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  public_key     = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
   admin_username = "ubuntu"
   # admin_password                = "P@ssw0rd!123!" # It is compulsory when disable_password_authentication = false
   caching                         = "ReadWrite"
@@ -140,7 +140,7 @@ module "virtual-machine" {
   image_offer                     = "0001-com-ubuntu-server-focal"
   image_sku                       = "20_04-lts"
   image_version                   = "latest"
-  enable_disk_encryption_set      = true
+  enable_disk_encryption_set      = false
   key_vault_id                    = module.vault.id
   addtional_capabilities_enabled  = true
   ultra_ssd_enabled               = false
