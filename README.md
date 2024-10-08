@@ -67,6 +67,82 @@ module "virtual-machine" {
   image_offer                     = "0001-com-ubuntu-server-focal"
   image_sku                       = "20_04-lts"
   image_version                   = "latest"
+  key_vault_id                    = module.vault.id
+  addtional_capabilities_enabled  = true
+  ultra_ssd_enabled               = false
+  enable_encryption_at_host       = false
+  key_vault_rbac_auth_enabled     = false
+  data_disks = [
+    {
+      name                 = "disk1"
+      disk_size_gb         = 100
+      storage_account_type = "StandardSSD_LRS"
+    }
+  ]
+  # Extension
+  extensions = [{
+    extension_publisher            = "Microsoft.Azure.Extensions"
+    extension_name                 = "hostname"
+    extension_type                 = "CustomScript"
+    extension_type_handler_version = "2.0"
+    auto_upgrade_minor_version     = true
+    automatic_upgrade_enabled      = false
+    settings                       = <<SETTINGS
+    {
+      "commandToExecute": "hostname && uptime"
+     }
+     SETTINGS
+  }]
+}
+```
+
+# Example: linux-vm-with-key-vault
+
+```hcl
+module "virtual-machine" {
+  source                          = "cypik/virtual-machine/azure"
+  version                         = "1.0.2"
+  ## Tags
+  name                            = "apouq"
+  environment                     = "test"
+  label_order                     = ["environment", "name"]
+  ## Common
+  is_vm_linux                     = true
+  enabled                         = true
+  machine_count                   = 1
+  resource_group_name             = module.resource_group.resource_group_name
+  location                        = module.resource_group.resource_group_location
+  disable_password_authentication = true
+  ## Network Interface
+  subnet_id                     = [module.subnet.default_subnet_id]
+  private_ip_address_version    = "IPv4"
+  private_ip_address_allocation = "Static"
+  primary                       = true
+  private_ip_addresses          = ["10.0.1.6"]
+  #nsg
+  network_interface_sg_enabled = true
+  network_security_group_id    = module.network_security_group.id
+  ## Availability Set
+  availability_set_enabled     = true
+  platform_update_domain_count = 7
+  platform_fault_domain_count  = 3
+  ## Public IP
+  public_ip_enabled = true
+  sku               = "Basic"
+  allocation_method = "Static"
+  ip_version        = "IPv4"
+  ## Virtual Machine
+  vm_size        = "Standard_B1s"
+  public_key     = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  admin_username = "ubuntu"
+  # admin_password                = "P@ssw0rd!123!" # It is compulsory when disable_password_authentication = false
+  caching                         = "ReadWrite"
+  disk_size_gb                    = 30
+  storage_image_reference_enabled = true
+  image_publisher                 = "Canonical"
+  image_offer                     = "0001-com-ubuntu-server-focal"
+  image_sku                       = "20_04-lts"
+  image_version                   = "latest"
   enable_disk_encryption_set      = true
   key_vault_id                    = module.vault.id
   addtional_capabilities_enabled  = true
@@ -202,7 +278,7 @@ Replace **MIT** and **Cypik** with the appropriate license and your information.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 4.2.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.3.0 |
 
 ## Modules
 
@@ -224,6 +300,7 @@ Replace **MIT** and **Cypik** with the appropriate license and your information.
 | [azurerm_network_interface_security_group_association.default](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface_security_group_association) | resource |
 | [azurerm_public_ip.default](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_role_assignment.azurerm_disk_encryption_set_key_vault_access](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.key_vault_crypto_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_virtual_machine_data_disk_attachment.data_disk](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_data_disk_attachment) | resource |
 | [azurerm_virtual_machine_extension.vm_insight_monitor_agent](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_extension) | resource |
 | [azurerm_windows_virtual_machine.win_vm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/windows_virtual_machine) | resource |

@@ -304,6 +304,15 @@ resource "azurerm_role_assignment" "azurerm_disk_encryption_set_key_vault_access
   principal_id         = join("", azurerm_disk_encryption_set.example[*].identity[0].principal_id)
 }
 
+
+resource "azurerm_role_assignment" "key_vault_crypto_user" {
+  count                = var.enable_disk_encryption_set ? var.machine_count : 0
+  name                 = uuid()
+  scope                = var.key_vault_id
+  role_definition_name = "Key Vault Crypto User"
+  principal_id         = azurerm_disk_encryption_set.example[0].identity[0].principal_id
+}
+
 resource "azurerm_key_vault_key" "example" {
   count        = var.enabled && var.enable_disk_encryption_set ? var.machine_count : 0
   name         = var.vm_addon_name == null ? format("vm-%s-vault-key-%s", module.labels.id, count.index + 1) : format("vm-%s-vault-key-%s", module.labels.id, var.vm_addon_name)
