@@ -12,8 +12,8 @@ variable "environment" {
 
 variable "managedby" {
   type        = string
-  default     = "cypik"
-  description = "ManagedBy, eg 'cypik'"
+  default     = "info@cypik.com"
+  description = "ManagedBy, eg 'info@cypik.com'"
 }
 
 variable "label_order" {
@@ -25,6 +25,12 @@ variable "repository" {
   type        = string
   default     = "https://github.com/cypik/terraform-azure-virtual-machine"
   description = "Terraform current module repo"
+}
+
+variable "extra_tags" {
+  type        = map(string)
+  default     = {}
+  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)."
 }
 
 ## Common Variables
@@ -91,13 +97,13 @@ variable "dns_servers" {
   description = "List of IP addresses of DNS servers."
 }
 
-variable "enable_ip_forwarding" {
+variable "ip_forwarding_enabled" {
   type        = bool
   default     = false
   description = "Should IP Forwarding be enabled? Defaults to false."
 }
 
-variable "enable_accelerated_networking" {
+variable "accelerated_networking_enabled" {
   type        = bool
   default     = false
   description = "Should Accelerated Networking be enabled? Defaults to false."
@@ -257,8 +263,8 @@ variable "vm_size" {
 
 variable "enable_os_disk_write_accelerator" {
   type        = any
-  description = "Should Write Accelerator be Enabled for this OS Disk? This requires that the `storage_account_type` is set to `Premium_LRS` and that `caching` is set to `None`."
   default     = false
+  description = "Should Write Accelerator be Enabled for this OS Disk? This requires that the `storage_account_type` is set to `Premium_LRS` and that `caching` is set to `None`."
 }
 
 variable "license_type" {

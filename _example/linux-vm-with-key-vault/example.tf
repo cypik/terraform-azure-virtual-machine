@@ -79,7 +79,24 @@ module "network_security_group" {
   ]
 }
 
+module "vault" {
+  depends_on                  = [module.vnet]
+  source                      = "cypik/key-vault/azure"
+  version                     = "1.0.2"
+  name                        = "apyg6886tfvgdp"
+  environment                 = "test"
+  sku_name                    = "standard"
+  resource_group_name         = module.resource_group.resource_group_name
+  subnet_id                   = module.subnet.default_subnet_id
+  virtual_network_id          = module.vnet.id
+  enable_private_endpoint     = true
+  enable_rbac_authorization   = true
+  purge_protection_enabled    = true
+  enabled_for_disk_encryption = true
+  principal_id                = ["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]
+  role_definition_name        = ["Key Vault Administrator"]
 
+}
 
 
 module "virtual-machine" {
@@ -115,7 +132,7 @@ module "virtual-machine" {
   ip_version        = "IPv4"
   ## Virtual Machine
   vm_size        = "Standard_B1s"
-  public_key     = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  public_key     = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
   admin_username = "ubuntu"
   # admin_password                = "P@ssw0rd!123!" # It is compulsory when disable_password_authentication = false
   caching                         = "ReadWrite"
@@ -125,10 +142,12 @@ module "virtual-machine" {
   image_offer                     = "0001-com-ubuntu-server-focal"
   image_sku                       = "20_04-lts"
   image_version                   = "latest"
+  enable_disk_encryption_set      = true
+  key_vault_id                    = module.vault.id
   addtional_capabilities_enabled  = true
   ultra_ssd_enabled               = false
   enable_encryption_at_host       = false
-  key_vault_rbac_auth_enabled     = false
+  key_vault_rbac_auth_enabled     = true
   data_disks = [
     {
       name                 = "disk1"

@@ -3,26 +3,27 @@
 
 module "labels" {
   source      = "cypik/labels/azure"
-  version     = "1.0.1"
+  version     = "1.0.2"
   name        = var.name
   environment = var.environment
   managedby   = var.managedby
   label_order = var.label_order
   repository  = var.repository
+  extra_tags  = var.extra_tags
 }
 
 #Module      : NETWORK INTERFACE
 #Description : Terraform resource to create a network interface for virtual machine.
 resource "azurerm_network_interface" "default" {
-  count                         = var.enabled ? var.machine_count : 0
-  name                          = var.vm_addon_name == null ? format("%s-network-interface-%s", module.labels.id, count.index + 1) : format("%s-network-interface-%s", module.labels.id, var.vm_addon_name)
-  resource_group_name           = var.resource_group_name
-  location                      = var.location
-  dns_servers                   = var.dns_servers
-  enable_ip_forwarding          = var.enable_ip_forwarding
-  enable_accelerated_networking = var.enable_accelerated_networking
-  internal_dns_name_label       = var.internal_dns_name_label
-  tags                          = module.labels.tags
+  count                          = var.enabled ? var.machine_count : 0
+  name                           = var.vm_addon_name == null ? format("%s-network-interface-%s", module.labels.id, count.index + 1) : format("%s-network-interface-%s", module.labels.id, var.vm_addon_name)
+  resource_group_name            = var.resource_group_name
+  location                       = var.location
+  dns_servers                    = var.dns_servers
+  ip_forwarding_enabled          = var.ip_forwarding_enabled
+  accelerated_networking_enabled = var.accelerated_networking_enabled
+  internal_dns_name_label        = var.internal_dns_name_label
+  tags                           = module.labels.tags
 
   ip_configuration {
     name                          = var.vm_addon_name == null ? format("%s-ip-configuration-%s", module.labels.id, count.index + 1) : format("%s-ip-configuration-%s", module.labels.id, var.vm_addon_name)
@@ -161,13 +162,14 @@ resource "azurerm_linux_virtual_machine" "default" {
   }
 
   os_disk {
-    name                      = var.vm_addon_name == null ? format("%s-storage-os-disk", module.labels.id) : format("%s-storage-os-disk-%s", module.labels.id, var.vm_addon_name)
+    name                      = var.vm_addon_name == null ? format("%s-storage-os-disk-%s", module.labels.id, count.index + 1) : format("%s-storage-os-disk-%s", module.labels.id, var.vm_addon_name)
     storage_account_type      = var.os_disk_storage_account_type
     caching                   = var.caching
     disk_encryption_set_id    = var.enable_disk_encryption_set ? azurerm_disk_encryption_set.example[0].id : null
     disk_size_gb              = var.disk_size_gb
     write_accelerator_enabled = var.write_accelerator_enabled
   }
+
 
   dynamic "source_image_reference" {
     for_each = var.storage_image_reference_enabled ? [1] : []
@@ -300,6 +302,15 @@ resource "azurerm_role_assignment" "azurerm_disk_encryption_set_key_vault_access
   scope                = var.key_vault_id //azurerm_key_vault.example.id
   role_definition_name = "Key Vault Crypto Service Encryption User"
   principal_id         = join("", azurerm_disk_encryption_set.example[*].identity[0].principal_id)
+}
+
+
+resource "azurerm_role_assignment" "key_vault_crypto_user" {
+  count                = var.enable_disk_encryption_set ? var.machine_count : 0
+  name                 = uuid()
+  scope                = var.key_vault_id
+  role_definition_name = "Key Vault Crypto User"
+  principal_id         = azurerm_disk_encryption_set.example[0].identity[0].principal_id
 }
 
 resource "azurerm_key_vault_key" "example" {
