@@ -47,7 +47,7 @@ module "subnet" {
 
 module "network_security_group" {
   source                  = "cypik/network-security-group/azure"
-  version                 = "1.0.1"
+  version                 = "1.0.2"
   name                    = "app"
   environment             = "test"
   resource_group_name     = module.resource_group.resource_group_name
@@ -93,7 +93,7 @@ module "vault" {
   enable_rbac_authorization   = true
   purge_protection_enabled    = true
   enabled_for_disk_encryption = true
-  principal_id                = ["d5ae204c-2aa4-41a4-8fbe-240bcc0c1710"]
+  principal_id                = ["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]
   role_definition_name        = ["Key Vault Administrator"]
 
 }
@@ -132,7 +132,7 @@ module "virtual-machine" {
   ip_version        = "IPv4"
   ## Virtual Machine
   vm_size        = "Standard_B1s"
-  public_key     = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDBaGAWXkDdhpEcj61gTFCV0Y97sW2YX4aD0ydNsU44yl/OGA14P7sBnXCoDhIHp7xrIJeKuPuoCli9sO7zZXhICzYvIczX3U8oOtPifje08glKbYT00mrl4lGnfQOlr50mJuTIY6b7ocs9oGi1S+oH/H0r+pEr/9gJgdkk7jE/kQOY9OfC/tcoi0dgeYKFJYe2FCU6LI+ZZA6lsz31Zl1ymv1JnwCck7yY+OFtqHxjVsmDeFz99GLmhnlAB2DOTgaOJer4gjA6JQ6Ii97KuZiIWgCkW8DQcUNYhWhZHyH9w5KT8Ug6dlIjM1w95fadkHjpt0J1QEzPQp7lvhNj1IVOnZYfu5rw5HHHyhVoglSXbCcXj9xPyEH5Yq5wdYNBgi/Q6c31riOANppfn2R++VUMaVBPyglSrKS3r39EgwTnAwK1luS13YZAN8jh2p3r9hfCD5mw23g8Z5l1qrmXM7yye53jbEUEcCShV2TGdFA2cydWwR1G1/n7DM61+EFHLSc= arjun@arjun"
+  public_key     = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
   admin_username = "ubuntu"
   # admin_password                = "P@ssw0rd!123!" # It is compulsory when disable_password_authentication = false
   caching                         = "ReadWrite"
