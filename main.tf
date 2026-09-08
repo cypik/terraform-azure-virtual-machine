@@ -3,7 +3,7 @@
 
 module "labels" {
   source      = "cypik/labels/azure"
-  version     = "1.0.2"
+  version     = "1.0.3"
   name        = var.name
   environment = var.environment
   managedby   = var.managedby
@@ -210,7 +210,7 @@ resource "azurerm_windows_virtual_machine" "win_vm" {
   provision_vm_agent           = var.provision_vm_agent
   allow_extension_operations   = var.allow_extension_operations
   dedicated_host_id            = var.dedicated_host_id
-  enable_automatic_updates     = var.enable_automatic_updates
+  automatic_updates_enabled    = var.enable_automatic_updates
   license_type                 = var.license_type
   availability_set_id          = var.availability_set_enabled ? join("", azurerm_availability_set.default[*].id) : null
   encryption_at_host_enabled   = var.enable_encryption_at_host

@@ -4,7 +4,7 @@ provider "azurerm" {
 
 module "resource_group" {
   source      = "cypik/resource-group/azure"
-  version     = "1.0.2"
+  version     = "1.0.3"
   name        = "app"
   environment = "tested"
   location    = "North Europe"
@@ -12,7 +12,7 @@ module "resource_group" {
 
 module "vnet" {
   source                 = "cypik/vnet/azure"
-  version                = "1.0.2"
+  version                = "1.0.3"
   name                   = "app"
   environment            = "test"
   resource_group_name    = module.resource_group.resource_group_name
@@ -24,7 +24,7 @@ module "vnet" {
 
 module "subnet" {
   source               = "cypik/subnet/azure"
-  version              = "1.0.2"
+  version              = "1.0.3"
   name                 = "app"
   environment          = "test"
   resource_group_name  = module.resource_group.resource_group_name
@@ -47,7 +47,7 @@ module "subnet" {
 
 module "network_security_group" {
   source                  = "cypik/network-security-group/azure"
-  version                 = "1.0.2"
+  version                 = "1.0.3"
   name                    = "app"
   environment             = "test"
   resource_group_name     = module.resource_group.resource_group_name
@@ -110,12 +110,12 @@ module "virtual-machine" {
   platform_fault_domain_count  = 3
   ## Public IP
   public_ip_enabled = true
-  sku               = "Basic"
+  sku               = "Standard"
   allocation_method = "Static"
   ip_version        = "IPv4"
   ## Virtual Machine
   vm_size        = "Standard_B1s"
-  public_key     = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  public_key     = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8oYJxtpAiBSQqVwdSlSxR2t0OVMexVPobyA/xaM1mC2ekdSzyRfEnMRJxxs6VPJ3zHYWd6SLLs0mrTnLf5SpMonb1UtHrVr6HS2HJtjc+3FxfiS4yg7EJgsHamNJbtAqmYda/iamZd9KHlDi6qIY0E48cF68i4qf5dqVFvPWd/nG2zq10etBuGwM7Uem8w/Apx6hop0InpcBi5zsD/rih4o+lcibhkG+hibD99pfGvefBZ/0arp3yRhbU4pD+95izgEPx+OCwxtYR9gY3mfhbkuh2mwm2e8yjeE9vD+SrUXYz3LNrarl/ACYJid7RU1VRjE5lyWMsanwCkQur9wUgOIrjr5rrnPalx3Kq7oI9Ls+iqMXpqsuAzSvPJPZU7kFCTWBwJ5gMMBNjfuki1vf4AmF5IkZsPnD1+nruCOTiO37Jh/WfufHCJii3tNksNzri4DdNGZssB5W8o8tybaGgj5SkaqzKno/REFHIqglohEKe/i3D4idDDAHXYsAWUbZ14dt/tY49P0q071PTtjLnM/c81D8m/EpCgnyIGmQ6TK6IYXh+t2d4H+4hNgpJMydUBjCVdYYny3fVkVcG+TBXDIZ+bedgWPdRkGLpsmM/QDG5MlQ9VZuKM5vkKR/zF4uoStz13P0Dewbzv3lsCxQcnubpTs1ltc+MQT5AZv4hbQ== example@cypik.com"
   admin_username = "ubuntu"
   # admin_password                = "P@ssw0rd!123!" # It is compulsory when disable_password_authentication = false
   caching                         = "ReadWrite"
@@ -132,7 +132,7 @@ module "virtual-machine" {
   data_disks = [
     {
       name                 = "disk1"
-      disk_size_gb         = 100
+      disk_size_gb         = 16
       storage_account_type = "StandardSSD_LRS"
     }
   ]

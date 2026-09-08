@@ -25,7 +25,7 @@ for creating AZURE resources, and you can customize the inputs as needed. Below 
 ```hcl
 module "virtual-machine" {
   source                          = "cypik/virtual-machine/azure"
-  version                         = "1.0.2"
+  version                         = "1.0.3"
   ## Tags
   name                            = "apouq"
   environment                     = "test"
@@ -101,7 +101,7 @@ module "virtual-machine" {
 ```hcl
 module "virtual-machine" {
   source                          = "cypik/virtual-machine/azure"
-  version                         = "1.0.2"
+  version                         = "1.0.3"
   ## Tags
   name                            = "apouq"
   environment                     = "test"
@@ -178,7 +178,7 @@ module "virtual-machine" {
 ```hcl
 module "virtual-machine" {
   source                        = "cypik/virtual-machine/azure"
-  version                       = "1.0.2"
+  version                       = "1.0.3"
   ## Tags
   name                          = "app"
   environment                   = "test"
@@ -271,20 +271,20 @@ Replace **MIT** and **Cypik** with the appropriate license and your information.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.5 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.2.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.15.8 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 5.4.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 4.2.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 5.4.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_labels"></a> [labels](#module\_labels) | cypik/labels/azure | 1.0.2 |
+| <a name="module_labels"></a> [labels](#module\_labels) | cypik/labels/azure | 1.0.3 |
 
 ## Resources
 
